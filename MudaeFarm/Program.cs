@@ -120,7 +120,7 @@ namespace MudaeFarm
 
             var command = content.Substring(0, content.IndexOf(' '));
             var argument = content.Substring(content.IndexOf(' ') + 1);
-            
+
             if (!string.IsNullOrWhiteSpace(command) &&
                 !string.IsNullOrWhiteSpace(argument))
                 switch (command.ToLowerInvariant())
@@ -151,6 +151,10 @@ namespace MudaeFarm
 
             if (string.IsNullOrWhiteSpace(name) ||
                 string.IsNullOrWhiteSpace(anime))
+                return;
+
+            if (embed.Footer.HasValue &&
+                embed.Footer.Value.Text.StartsWith("Belongs to", StringComparison.OrdinalIgnoreCase))
                 return;
 
             if (_config.WishlistCharacters.Contains(name.ToLowerInvariant()) ||
