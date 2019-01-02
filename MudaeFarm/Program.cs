@@ -127,9 +127,19 @@ namespace MudaeFarm
                 {
                     case "wish":
                         _config.WishlistCharacters.Add(argument.ToLowerInvariant());
+                        _logger.LogInformation($"Added character '{argument}' to the wishlist.");
                         break;
                     case "unwish":
                         _config.WishlistCharacters.Remove(argument.ToLowerInvariant());
+                        _logger.LogInformation($"Removed character '{argument}' from the wishlist.");
+                        break;
+                    case "wishani":
+                        _config.WishlistAnimes.Add(argument.ToLowerInvariant());
+                        _logger.LogInformation($"Added anime '{argument}' to the wishlist.");
+                        break;
+                    case "unwishani":
+                        _config.WishlistAnimes.Remove(argument.ToLowerInvariant());
+                        _logger.LogInformation($"Removed anime '{argument}' from the wishlist.");
                         break;
                     default:
                         return;
