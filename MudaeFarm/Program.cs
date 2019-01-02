@@ -133,6 +133,12 @@ namespace MudaeFarm
                         _config.WishlistCharacters.Remove(argument.ToLowerInvariant());
                         _logger.LogInformation($"Removed character '{argument}' from the wishlist.");
                         break;
+                    case "wishlist":
+                        await message.ModifyAsync(m =>
+                        {
+                            m.Content = $"Character wishlist: {string.Join(", ", _config.WishlistCharacters)}";
+                        });
+                        return;
                     case "wishani":
                         _config.WishlistAnimes.Add(argument.ToLowerInvariant());
                         _logger.LogInformation($"Added anime '{argument}' to the wishlist.");
@@ -141,6 +147,12 @@ namespace MudaeFarm
                         _config.WishlistAnimes.Remove(argument.ToLowerInvariant());
                         _logger.LogInformation($"Removed anime '{argument}' from the wishlist.");
                         break;
+                    case "wishlistani":
+                        await message.ModifyAsync(m =>
+                        {
+                            m.Content = $"Anime wishlist: {string.Join(", ", _config.WishlistAnimes)}";
+                        });
+                        return;
                     default:
                         return;
                 }
