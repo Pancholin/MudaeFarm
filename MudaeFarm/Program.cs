@@ -146,25 +146,16 @@ namespace MudaeFarm
 
             var embed = message.Embeds.First();
 
-            if (!embed.Footer.HasValue)
+            if (embed.Footer.HasValue &&
+                embed.Footer.Value.Text.StartsWith("Belongs to", StringComparison.OrdinalIgnoreCase))
                 return;
 
-            var footer = embed.Footer.Value.Text;
-
-            if (footer.StartsWith("Belongs to", StringComparison.OrdinalIgnoreCase))
+            if (!embed.Author.HasValue ||
+                embed.Author.Value.IconUrl != null)
                 return;
 
-            var delimitor = footer.IndexOf('/');
-
-            if (delimitor == -1)
-                return;
-
-            var name = footer.Substring(0, delimitor).Trim().ToLowerInvariant();
-            var anime = footer.Substring(delimitor + 1).Trim().ToLowerInvariant();
-
-            if (int.TryParse(name, out _) &&
-                int.TryParse(anime, out _))
-                return;
+            var name = embed.Author.Value.Name.Trim();
+            var anime = embed.Description.Trim();
 
             if (_config.WishlistCharacters.Contains(name) ||
                 _config.WishlistAnimes.Contains(name))
