@@ -121,41 +121,49 @@ namespace MudaeFarm
             var command = content.Substring(0, content.IndexOf(' '));
             var argument = content.Substring(content.IndexOf(' ') + 1);
 
-            if (!string.IsNullOrWhiteSpace(command) &&
-                !string.IsNullOrWhiteSpace(argument))
-                switch (command.ToLowerInvariant())
-                {
-                    case "wish":
-                        _config.WishlistCharacters.Add(argument.ToLowerInvariant());
-                        _logger.LogInformation($"Added character '{argument}' to the wishlist.");
-                        break;
-                    case "unwish":
-                        _config.WishlistCharacters.Remove(argument.ToLowerInvariant());
-                        _logger.LogInformation($"Removed character '{argument}' from the wishlist.");
-                        break;
-                    case "wishlist":
-                        await message.ModifyAsync(m =>
-                        {
-                            m.Content = $"Character wishlist: {string.Join(", ", _config.WishlistCharacters)}";
-                        });
-                        return;
-                    case "wishani":
-                        _config.WishlistAnimes.Add(argument.ToLowerInvariant());
-                        _logger.LogInformation($"Added anime '{argument}' to the wishlist.");
-                        break;
-                    case "unwishani":
-                        _config.WishlistAnimes.Remove(argument.ToLowerInvariant());
-                        _logger.LogInformation($"Removed anime '{argument}' from the wishlist.");
-                        break;
-                    case "wishlistani":
-                        await message.ModifyAsync(m =>
-                        {
-                            m.Content = $"Anime wishlist: {string.Join(", ", _config.WishlistAnimes)}";
-                        });
-                        return;
-                    default:
-                        return;
-                }
+            if (string.IsNullOrWhiteSpace(command))
+                return;
+
+            switch (command)
+            {
+                case "wishlist":
+                    await message.ModifyAsync(m =>
+                    {
+                        m.Content = $"Character wishlist: {string.Join(", ", _config.WishlistCharacters)}";
+                    });
+                    return;
+                case "wishlistani":
+                    await message.ModifyAsync(m =>
+                    {
+                        m.Content = $"Anime wishlist: {string.Join(", ", _config.WishlistAnimes)}";
+                    });
+                    return;
+            }
+
+            if (string.IsNullOrWhiteSpace(argument))
+                return;
+
+            switch (command.ToLowerInvariant())
+            {
+                case "wish":
+                    _config.WishlistCharacters.Add(argument.ToLowerInvariant());
+                    _logger.LogInformation($"Added character '{argument}' to the wishlist.");
+                    break;
+                case "unwish":
+                    _config.WishlistCharacters.Remove(argument.ToLowerInvariant());
+                    _logger.LogInformation($"Removed character '{argument}' from the wishlist.");
+                    break;
+                case "wishani":
+                    _config.WishlistAnimes.Add(argument.ToLowerInvariant());
+                    _logger.LogInformation($"Added anime '{argument}' to the wishlist.");
+                    break;
+                case "unwishani":
+                    _config.WishlistAnimes.Remove(argument.ToLowerInvariant());
+                    _logger.LogInformation($"Removed anime '{argument}' from the wishlist.");
+                    break;
+                default:
+                    return;
+            }
 
             await message.DeleteAsync();
             await SaveConfigAsync();
