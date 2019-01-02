@@ -146,19 +146,28 @@ namespace MudaeFarm
 
             var embed = message.Embeds.First();
 
-            var name = embed.Author?.Name;
-            var anime = embed.Description;
-
-            if (string.IsNullOrWhiteSpace(name) ||
-                string.IsNullOrWhiteSpace(anime))
+            if (!embed.Footer.HasValue)
                 return;
 
-            if (embed.Footer.HasValue &&
-                embed.Footer.Value.Text.StartsWith("Belongs to", StringComparison.OrdinalIgnoreCase))
+            var footer = embed.Footer.Value.Text;
+
+            if (footer.StartsWith("Belongs to", StringComparison.OrdinalIgnoreCase))
                 return;
 
-            if (_config.WishlistCharacters.Contains(name.ToLowerInvariant()) ||
-                _config.WishlistAnimes.Contains(name.ToLowerInvariant()))
+            var delimitor = footer.IndexOf('/');
+
+            if (delimitor == -1)
+                return;
+
+            var name = footer.Substring(0, delimitor).Trim().ToLowerInvariant();
+            var anime = footer.Substring(delimitor + 1).Trim().ToLowerInvariant();
+
+            if (int.TryParse(name, out _) &&
+                int.TryParse(anime, out _))
+                return;
+
+            if (_config.WishlistCharacters.Contains(name) ||
+                _config.WishlistAnimes.Contains(name))
             {
                 _logger.LogInformation($"Found character '{name}', trying marriage.");
 
