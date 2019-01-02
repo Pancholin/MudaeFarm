@@ -120,18 +120,20 @@ namespace MudaeFarm
 
             var command = content.Substring(0, content.IndexOf(' '));
             var argument = content.Substring(content.IndexOf(' ') + 1);
-
-            switch (command.ToLowerInvariant())
-            {
-                case "wish":
-                    _config.WishlistCharacters.Add(argument.ToLowerInvariant());
-                    break;
-                case "unwish":
-                    _config.WishlistCharacters.Remove(argument.ToLowerInvariant());
-                    break;
-                default:
-                    return;
-            }
+            
+            if (!string.IsNullOrWhiteSpace(command) &&
+                !string.IsNullOrWhiteSpace(argument))
+                switch (command.ToLowerInvariant())
+                {
+                    case "wish":
+                        _config.WishlistCharacters.Add(argument.ToLowerInvariant());
+                        break;
+                    case "unwish":
+                        _config.WishlistCharacters.Remove(argument.ToLowerInvariant());
+                        break;
+                    default:
+                        return;
+                }
 
             await message.DeleteAsync();
             await SaveConfigAsync();
@@ -153,9 +155,13 @@ namespace MudaeFarm
 
             if (_config.WishlistCharacters.Contains(name.ToLowerInvariant()))
             {
+                _logger.LogInformation($"Found character '{name}', trying marriage.");
+
                 await message.AddReactionAsync(new Emoji("\uD83D\uDC96"));
                 await SaveConfigAsync();
             }
+            else
+                _logger.LogInformation($"Ignored character '{name}', not wished.");
         }
 
         static Config _config;
