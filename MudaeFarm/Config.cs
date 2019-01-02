@@ -7,5 +7,6 @@ namespace MudaeFarm
         public string AuthToken { get; set; }
 
         public HashSet<string> WishlistCharacters { get; set; } = new HashSet<string>();
+        public HashSet<string> WishlistAnimes { get; set; } = new HashSet<string>();
     }
 }

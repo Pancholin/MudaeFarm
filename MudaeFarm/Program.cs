@@ -153,7 +153,8 @@ namespace MudaeFarm
                 string.IsNullOrWhiteSpace(anime))
                 return;
 
-            if (_config.WishlistCharacters.Contains(name.ToLowerInvariant()))
+            if (_config.WishlistCharacters.Contains(name.ToLowerInvariant()) ||
+                _config.WishlistAnimes.Contains(name.ToLowerInvariant()))
             {
                 _logger.LogInformation($"Found character '{name}', trying marriage.");
 
