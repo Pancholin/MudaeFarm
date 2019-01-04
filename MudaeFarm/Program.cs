@@ -188,6 +188,9 @@ namespace MudaeFarm
             var name = embed.Author.Value.Name.Trim().ToLowerInvariant();
             var anime = embed.Description.Trim().ToLowerInvariant();
 
+            if (anime.Contains('\n'))
+                return;
+
             if (_config.WishlistCharacters.Contains(name) ||
                 _config.WishlistAnimes.Contains(anime))
             {
