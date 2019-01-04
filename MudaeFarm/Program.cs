@@ -185,11 +185,11 @@ namespace MudaeFarm
                 embed.Author.Value.IconUrl != null)
                 return;
 
-            var name = embed.Author.Value.Name.Trim();
-            var anime = embed.Description.Trim();
+            var name = embed.Author.Value.Name.Trim().ToLowerInvariant();
+            var anime = embed.Description.Trim().ToLowerInvariant();
 
             if (_config.WishlistCharacters.Contains(name) ||
-                _config.WishlistAnimes.Contains(name))
+                _config.WishlistAnimes.Contains(anime))
             {
                 _logger.LogInformation($"Found character '{name}', trying marriage.");
 
